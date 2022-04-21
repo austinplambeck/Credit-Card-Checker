@@ -23,45 +23,36 @@ const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3];
 const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, invalid3, invalid4, invalid5, mystery1, mystery2, mystery3, mystery4, mystery5];
 
 
-// Add your functions below:
 
+// Function to validate credit card number
 const validateCred = (arr) => {
   let ifEvenDouble = 0;
-  let checkSum=0
-
-  // Iterate through array, double what is needed
-
+  let checkSum = 0;
+  // Iterate through the array, double what is needed
   for (let i = arr.length - 2; i >= 0; i--) {   // If ifEvenDouble is even, we are at the 'every other' number
+
     if ((ifEvenDouble % 2) === 0) {
       let doubled = arr[i] * 2; // doubling the 'every other' number
 
       // If the doubled digit > 9, store sum of individual digits
       // Convert the doubled number to a string then extract each member and convert back to number for calculation
-      // then add to checkSum and skip to next iteration, otherwise, add arr[i]
+      // then add to checkSum and skip to next iteration; otherwise, add arr[i]
 
       let newDigit = 0;
-
       if (doubled > 9) {
         newDigit = Number(doubled.toString()[0]) + Number(doubled.toString()[1]);
-
         // Add doubled & split digit to total and continue the loop
-
         checkSum += newDigit;
         ifEvenDouble++;
         continue;
       }
-
       // Add doubled digit less than 9 to total and continue the loop
-
       checkSum += doubled;
       ifEvenDouble++;
       continue;
     }
-
     // Add current array member to total
-
     checkSum += arr[i];
-
     ifEvenDouble++;
 
   } // End for loop
@@ -122,7 +113,7 @@ const idInvalidCardCompanies = (nestedArr) => {
       
       default:
         if (!invalidCompanies.includes('Company not found')) {
-          invalidCompanies.push('Company not found');
+          console.log('Company not found');
         }
     }
   }
