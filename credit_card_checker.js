@@ -25,99 +25,94 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 
 
 // Function to validate credit card number
-const validateCred = (arr) => {
-  let ifEvenDouble = 0;
-  let checkSum = 0;
-  // Iterate through the array, double what is needed
-  for (let i = arr.length - 2; i >= 0; i--) {   // If ifEvenDouble is even, we are at the 'every other' number
-
-    if ((ifEvenDouble % 2) === 0) {
-      let doubled = arr[i] * 2; // doubling the 'every other' number
-
-      // If the doubled digit > 9, store sum of individual digits
-      // Convert the doubled number to a string then extract each member and convert back to number for calculation
-      // then add to checkSum and skip to next iteration; otherwise, add arr[i]
-
-      let newDigit = 0;
-      if (doubled > 9) {
-        newDigit = Number(doubled.toString()[0]) + Number(doubled.toString()[1]);
-        // Add doubled & split digit to total and continue the loop
-        checkSum += newDigit;
-        ifEvenDouble++;
-        continue;
-      }
-      // Add doubled digit less than 9 to total and continue the loop
-      checkSum += doubled;
-      ifEvenDouble++;
-      continue;
-    }
-    // Add current array member to total
-    checkSum += arr[i];
-    ifEvenDouble++;
-
-  } // End for loop
-
-  const checkDigit = arr[arr.length-1];
-  const totalSum = checkDigit + checkSum;
-
-  if (totalSum % 10 === 0) {
-    console.log('Valid');
-    return true;
-  } else {
-    console.log('Invalid');
+const validateCred = (cardNum) => {
+  if (!Array.isArray(cardNum)) {
     return false;
   }
+
+  let numOfDigits = cardNum.length;
+  let sum = cardNum[numOfDigits - 1];
+  const ifEven = (numOfDigits - 2) % 2;
+
+  for (let i = 0; i <= numOfDigits; i++) {
+    let digit = cardNum[i];
+    if (i % 2 == ifEven) {
+      digit *= 2;
+    }
+    if  (digit > 9) {
+      digit -= 9;
+    }
+    sum += digit;
+  }
+  return sum % 10 == 0;
+  
 }
 
-validateCred(mystery4);
 
+const findInvalidCards = (batch) => {
+  let invalidCards = new Array();
 
-
-let invalidArr = [];
-const findInvalidCards = (nestedArr) => {
-  for (i = 0; i < nestedArr.length; i++) {
-    if (validateCred(nestedArr[i]) === false) {
-      invalidArr.push(nestedArr[i]);
+  for (let card of batch) {
+    if (!validateCred(card)) {
+      invalidCards.push(card);
     }
   }
-  return invalidArr;
+  return invalidCards;
 }
 
-console.log(findInvalidCards(batch));
 
 
+const idInvalidCardCompanies = (batch) => {
+  let companies = new Array();
 
-const idInvalidCardCompanies = (nestedArr) => {
-  let invalidCompanies = [];
-  for (i = 0; i < nestedArr.length; i++) {
-    switch (nestedArr[i][0]) {
+  for (let card of batch) {
+    switch (card[0]) {
       case 3:
-        if (!invalidCompanies.includes('Amex (American Express)')) {
-          invalidCompanies.push('Amex (American Express)');
+        if (!companies.includes('Amex (American Express)')) {
+          companies.push('Amex (American Express)');
         };
       
       case 4:
-        if (!invalidCompanies.includes('Visa')) {
-          invalidCompanies.push('Visa');
+        if (!companies.includes('Visa')) {
+          companies.push('Visa');
         };
 
       case 5:
-        if (!invalidCompanies.includes('Mastercard')) {
-          invalidCompanies.push('Mastercard');
+        if (!companies.includes('Mastercard')) {
+          companies.push('Mastercard');
         };
 
       case 6:
-        if (!invalidCompanies.includes('Discover')) {
-          invalidCompanies.push('Discover');
+        if (!companies.includes('Discover')) {
+          companies.push('Discover');
         };
       
       default:
-        if (!invalidCompanies.includes('Company not found')) {
+        if (!companies.includes('Company not found')) {
           console.log('Company not found');
         }
     }
   }
-  return console.log(invalidCompanies);
+  return companies;
 }
 
-idInvalidCardCompanies(findInvalidCards(batch));
+
+
+console.log(idInvalidCardCompanies([invalid1])); // Should print['visa']
+console.log(idInvalidCardCompanies([invalid2])); // Should print ['mastercard']
+console.log(idInvalidCardCompanies(batch)); // Find out which companies have mailed out invalid cards
+
+// main function that drives the program
+/*
+const main = (batch) => {
+  const invalidCards = findInvalidCards(batch);
+  const companies = idInvalidCardCompanies(invalidCards);
+
+  for (let company of companies) {
+    console.log(company);
+  }
+}
+
+main(batch);
+
+*/
