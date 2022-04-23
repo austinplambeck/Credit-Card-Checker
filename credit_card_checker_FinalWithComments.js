@@ -26,18 +26,18 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 
 // validateCred() function to validate the credit card numbers
 const validateCred = (cardNum) => {
-    let sum = 0; // initializing the variable for sum
-    for (let i = cardNum.length - 1; i >= 0; i--) {
-        let currValue = cardNum[i]; // setting a variable for the current value during iteration
-        if ((cardNum.length - 1 - i) % 2 === 1) { // if statement to check if the current [i] position is even, or alternating
-            currValue *= 2; // double these alternating values
+    let sum = 0;                                        // initializing the variable for the sum of the individual digits
+    for (let i = cardNum.length - 1; i >= 0; i--) {     // for loop, iterating through each digit of the card number in reverse
+        let currValue = cardNum[i];                     // setting a variable for the current value during iteration
+        if ((cardNum.length - 1 - i) % 2 === 1) {       // if statement to check if the current [i] position is even (alternating)
+            currValue *= 2;                             // double these alternating values
             if (currValue > 9) {
-                currValue -= 9; // subtract 9 from values greater than 9
+                currValue -= 9;                         // subtract 9 from values greater than 9
             }
         }
-        sum += currValue; // add up the [i]'s to get the total sum of the card's numbers
+        sum += currValue;                               // add up the [i]'s to get the total sum of the card's numbers
     }
-    return sum % 10 === 0; // return statement when the sum % 10 is equal to 0 (valid card)
+    return sum % 10 === 0;                              // return TRUE when the sum % 10 is equal to 0 (valid card) and FALSE when not
 }
 
 // Test the function:
@@ -47,16 +47,16 @@ console.log(validateCred(invalid1)); // Should print false
 
 // function to check if the cards are invalid
 const findInvalidCards = (cards) => {
-    const invalid = []; // intializing an empty array, which will contain the invalid credit cards after this function runs
+    const invalid = [];                         // intializing an empty array, which will contain the invalid credit cards after this function runs
 
-    for (let i = 0; i < cards.length; i++) { // for loop, iterating through the cards
-        let currCard = cards[i]; // setting a variable for the current card during iteration
+    for (let i = 0; i < cards.length; i++) {    // for loop, iterating through the cards
+        let currCard = cards[i];                // setting a variable for the current card during iteration
 
-        if (!validateCred(currCard)) { // if they cards were not validated in the validateCred() function
-            invalid.push(currCard); // they will be pushed to the invalid array
+        if (!validateCred(currCard)) {          // if they cards were not validated in the validateCred() function
+            invalid.push(currCard);             // they will be pushed to the invalid array
         }
     }
-    return invalid; // return the invalid array, containing all of the invalid cards
+    return invalid;                             // return the invalid array, containing all of the invalid cards
 }
 
 // Testing the function:
